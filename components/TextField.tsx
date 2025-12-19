@@ -13,14 +13,14 @@ interface Props{
 const TextField = ({name, placeholder, value, setValue, secureText, multiline}: Props) => {
     return (
        <View className='gap-2'>
-            <Text className='text-neutral-600 font-medium'>
+            <Text className='text-subtext-1 font-medium'>
                 {name}
             </Text>
             <TextInput
-                className='p-2 bg-neutral-100 rounded-md 
-                border-1 outline-black'
+                className={`p-2 bg-panel-2 border min-h-10 border-border-secondary rounded-md 
+                text-subtext-2 ${multiline ? "max-h-20" : ""}`}
                 placeholder={placeholder}
-                placeholderTextColor={"#b0b0b0"}
+                placeholderTextColor={"hsl(0, 0%, 55%)"}
                 value={value}
                 onChangeText={(v) => setValue(v)}
                 secureTextEntry={secureText}
