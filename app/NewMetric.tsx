@@ -1,34 +1,30 @@
+import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import { Dropdown } from '@/components/DropDown'
 import TextField from '@/components/TextField'
 import { createMetric } from '@/db/queries'
-import { units } from '@/db/types'
+import { frequencies, units } from '@/db/types'
 
 import React, { useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, View } from 'react-native'
 
 const NewMetric = () => {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [unit, setUnit] = useState("")
+    const [freqeuncy, setFrequency] = useState("")
 
     const createNewMetric = async () => {
         await createMetric({
             category_id: null,
             name,
             description: description ? description : null,
-            log_frequency: "daily",
+            log_frequency: freqeuncy,
             unit: unit
         })
         setName(""); setDescription(""); setUnit("")
         alert("User Created")
     }
-
-    const points = [
-        { date: new Date('2025-01-01'), value: 70 },
-        { date: new Date('2025-01-02'), value: 72 },
-        { date: new Date('2025-01-03'), value: 71 },
-    ]
 
     return (
         <DismissKeyboard>
@@ -51,7 +47,18 @@ const NewMetric = () => {
                         setValue={setDescription}
                         multiline={true}
                     />
-
+                    <View className='gap-2'>
+                        <Text className='text-subtext-1 font-medium'>
+                            Log Frequency
+                        </Text>
+                        <Dropdown
+                            options={frequencies}
+                            selected={freqeuncy}
+                            onSelect={setFrequency}
+                            showSearch={false}
+                            placeholder='Select Log Frequency'
+                        />
+                    </View>
                     <View className='gap-2'>
                         <Text className='text-subtext-1 font-medium'>
                             Unit
@@ -60,17 +67,14 @@ const NewMetric = () => {
                             options={units}
                             selected={unit}
                             onSelect={setUnit}
+                            showSearch={true}
+                            placeholder='Select Unit'
                         />
                     </View>
-                    <TouchableOpacity
-                        className='bg-slate-600 p-3 flex justify-center
-                            items-center rounded-md h-10'
-                        onPress={createNewMetric}
-                    >
-                        <Text className='text-neutral-300 font-bold'>
-                            Create
-                        </Text>
-                    </TouchableOpacity>
+                   <Button 
+                        onClick={createNewMetric}>
+                        Create
+                   </Button>
                 </View>
             </View>
         </DismissKeyboard>

@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { createTablesSQL, getMetricsSQL } from './sql';
+import { createMetricSQL, createTablesSQL, getMetricsSQL } from './sql';
 import { InputMetric, Metric } from './types';
 
 
@@ -12,14 +12,14 @@ function getDB(){
 
 export async function setupDB(){
     if(db) return
-    db = await SQLite.openDatabaseAsync("metrics.db")
+    db = await SQLite.openDatabaseAsync("metric.db")
     await db.execAsync(createTablesSQL);
 }
 
 export async function createMetric(metric: InputMetric){
     const db = getDB()
 
-    await db!.runAsync(createTablesSQL, [
+    await db!.runAsync(createMetricSQL, [
         metric.category_id, 
         metric.name, 
         metric.description,

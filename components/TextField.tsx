@@ -18,7 +18,7 @@ const TextField = ({name, placeholder, value, setValue, secureText, multiline}: 
             </Text>
             <TextInput
                 className={`p-2 bg-panel-2 border min-h-10 border-border-secondary rounded-md 
-                text-subtext-2 ${multiline ? "max-h-20" : ""}`}
+                text-subtext-2 ${multiline ? "max-h-20" : ""} flex items-center`}
                 placeholder={placeholder}
                 placeholderTextColor={"hsl(0, 0%, 55%)"}
                 value={value}

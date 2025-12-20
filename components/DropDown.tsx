@@ -14,11 +14,12 @@ type DropdownProps = {
     selected: string | null;
     onSelect: (value: string) => void;
     placeholder?: string;
+    showSearch?: boolean
 };
 
 const { height, width } = Dimensions.get('window');
 
-export const Dropdown: React.FC<DropdownProps> = ({ options, selected, onSelect, placeholder = 'Select an option' }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ options, selected, onSelect, placeholder = 'Select an option', showSearch}: DropdownProps) => {
 
     const animationProgress = useSharedValue(0);
     const borderWidth = useSharedValue(0)
@@ -57,7 +58,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, selected, onSelect,
 
     const dropdownContentStyle = useAnimatedStyle(() => {
         return {
-            height: interpolate(animationProgress.value, [0, 1], [0, 200]),
+            height: interpolate(animationProgress.value, [0, 1], [0, showSearch ? 200 : 140]),
             borderWidth: borderWidth.value
         };
     });
@@ -70,7 +71,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, selected, onSelect,
                 onPress={toggleDropDown}
                 activeOpacity={0.7}
             >
-                <Text className="text-subtext-2 capitalize font-medium pr-1">{selected || placeholder}</Text>
+                <Text className="text-subtext-2 capitalize pr-1">{selected || placeholder}</Text>
                 <Animated.View style={rotationStyle}>
                     <Ionicons
                         name="caret-down"
@@ -103,23 +104,25 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, selected, onSelect,
                 rounded-md shadow-lg z-50 w-full overflow-hidden"
                 style={dropdownContentStyle}
             >
-                <View className='bg-panel-3 border-b border-border-secondary flex-row 
-                    items-center pl-3'>
-                    <Ionicons
-                        name="search"
-                        size={12}
-                        color="hsl(0, 0%, 55%)"
-                        className='mt-1'
-                    />
-                    <TextInput
-                        className='w-full h-full p-3 text-subtext-1 font-medium
-                        text-sm'
-                        placeholder='Search...'
-                        placeholderTextColor={"hsl(0, 0%, 55%)"}
-                        value={search}
-                        onChangeText={e => setSearch(e)}
-                    />
-                </View>
+                {showSearch &&
+                    <View className='bg-panel-3 border-b border-border-secondary flex-row 
+                        items-center pl-3'>
+                        <Ionicons
+                            name="search"
+                            size={12}
+                            color="hsl(0, 0%, 55%)"
+                            className='mt-1'
+                        />
+                        <TextInput
+                            className='w-full h-full p-3 text-subtext-1 font-medium
+                            text-sm'
+                            placeholder='Search...'
+                            placeholderTextColor={"hsl(0, 0%, 55%)"}
+                            value={search}
+                            onChangeText={e => setSearch(e)}
+                        />
+                    </View>
+                }
                 <FlatList
                     data={options}
                     keyExtractor={(item, index) => `${item}-${index}`}

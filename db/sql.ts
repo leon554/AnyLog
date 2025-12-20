@@ -10,7 +10,7 @@ export const createTablesSQL = /* sql */ `
 
     CREATE TABLE IF NOT EXISTS metrics (
         id integer primary key not null, 
-        category_id integer not null, 
+        category_id integer, 
         name text not null,
         description text,
         unit text not null,
