@@ -1,13 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react';
 import { Dimensions, FlatList, Keyboard, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Animated, {
-    interpolate,
-    useAnimatedStyle,
-    useSharedValue,
-    withDelay,
-    withTiming
-} from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 type DropdownProps = {
     options: string[];

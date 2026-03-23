@@ -4,25 +4,29 @@ import { Dropdown } from '@/components/DropDown'
 import TextField from '@/components/TextField'
 import { createMetric } from '@/db/queries'
 import { frequencies, units } from '@/db/types'
+import useForm from '@/hooks/useForm'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Text, View } from 'react-native'
 
 const NewMetric = () => {
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    const [unit, setUnit] = useState("")
-    const [freqeuncy, setFrequency] = useState("")
+    const {form, setProp, reset} = useForm({
+        name: "",
+        description: "",
+        frequency: "",
+        unit: ""
+    })
 
+    
     const createNewMetric = async () => {
         await createMetric({
             category_id: null,
-            name,
-            description: description ? description : null,
-            log_frequency: freqeuncy,
-            unit: unit
+            name: form?.name!,
+            description: form?.description ?? null,
+            log_frequency: form!.frequency,
+            unit: form!.unit
         })
-        setName(""); setDescription(""); setUnit("")
+        reset()
         alert("User Created")
     }
 
@@ -37,14 +41,14 @@ const NewMetric = () => {
                     <TextField 
                         name='Metric Name' 
                         placeholder='e.g Moring Temp...'
-                        value={name}
-                        setValue={setName}
+                        value={form!.name}
+                        setValue={(v: string) => setProp("name", v)}
                     />
                     <TextField 
                         name='Description' 
                         placeholder='Enter description...'
-                        value={description}
-                        setValue={setDescription}
+                        value={form!.description}
+                        setValue={(v: string) => setProp("description", v)}
                         multiline={true}
                     />
                     <View className='gap-2'>
@@ -53,8 +57,8 @@ const NewMetric = () => {
                         </Text>
                         <Dropdown
                             options={frequencies}
-                            selected={freqeuncy}
-                            onSelect={setFrequency}
+                            selected={form!.frequency}
+                            onSelect={(v: string) => setProp("frequency", v)}
                             showSearch={false}
                             placeholder='Select Log Frequency'
                         />
@@ -65,8 +69,8 @@ const NewMetric = () => {
                         </Text>
                         <Dropdown
                             options={units}
-                            selected={unit}
-                            onSelect={setUnit}
+                            selected={form!.unit}
+                            onSelect={(v: string) => setProp("unit", v)}
                             showSearch={true}
                             placeholder='Select Unit'
                         />
